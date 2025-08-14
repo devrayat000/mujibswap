@@ -33,19 +33,11 @@ from fastapi import HTTPException, status
 
 @app.post("/api/swap.jpeg")
 async def swap_face_with_mujib(file: UploadFile):
+
     try:
         img_bytes = await file.read()
         img = ImageFile().from_bytes(img_bytes)
-        # Validate loaded image
-        if not hasattr(img, "image") or img.image is None:
-            raise ValueError("Uploaded file is not a valid image.")
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Could not load image. Error: {e}",
-        )
 
-    try:
         result = f2f.swap_img_to_img(
             img,
             "static/mujib.jpg",
