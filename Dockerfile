@@ -22,5 +22,8 @@ COPY . .
 # Expose port (default FastAPI/uvicorn port)
 EXPOSE 10000
 
+ENV ROOT_DIR=/app/data
+VOLUME [ "/app/data" ]
+
 # Command to run the FastAPI app
 CMD ["/app/.venv/bin/fastapi", "run", "main.py", "--host", "0.0.0.0", "--port", "10000"]
