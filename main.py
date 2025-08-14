@@ -28,21 +28,44 @@ async def index_page(request: Request):
     return templates.TemplateResponse(request=request, name="index.html")
 
 
+from fastapi import HTTPException, status
+
+
 @app.post("/api/swap.jpeg")
 async def swap_face_with_mujib(file: UploadFile):
-    img = ImageFile().from_bytes(await file.read())
-    result = f2f.swap_img_to_img(
-        img,
-        "static/mujib.jpg",
-        enhance_face_model=None,
-    )
-    # Convert BGR (likely) to RGB
-    if result.ndim == 3 and result.shape[2] == 3:
-        result_rgb = result[:, :, ::-1]
-    else:
-        result_rgb = result
-    pil_img = Image.fromarray(result_rgb)
+    try:
+        img_bytes = await file.read()
+        img = ImageFile().from_bytes(img_bytes)
+        # Validate loaded image
+        if not hasattr(img, "image") or img.image is None:
+            raise ValueError("Uploaded file is not a valid image.")
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Could not load image. Error: {e}",
+        )
+
+    try:
+        result = f2f.swap_img_to_img(
+            img,
+            "static/mujib.jpg",
+            enhance_face_model=None,
+        )
+        if result is None:
+            raise ValueError("Face swap failed. No result returned.")
+        # Convert BGR (likely) to RGB
+        if hasattr(result, "ndim") and result.ndim == 3 and result.shape[2] == 3:
+            result_rgb = result[:, :, ::-1]
+        else:
+            result_rgb = result
+        pil_img = Image.fromarray(result_rgb)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Face swap failed. Error: {e}",
+        )
+
     buf = io.BytesIO()
     pil_img.save(buf, format="JPEG")
-    result = buf.getvalue()
-    return StreamingResponse(io.BytesIO(result), media_type="image/jpeg")
+    result_bytes = buf.getvalue()
+    return StreamingResponse(io.BytesIO(result_bytes), media_type="image/jpeg")

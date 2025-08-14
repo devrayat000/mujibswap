@@ -21,13 +21,14 @@ const loadingHolder = document.getElementById('loadingHolder');
 
 
 
+
 faceInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
             facePreview.src = e.target.result;
-            facePreview.style.display = 'block';
+            facePreview.style.display = '';
             // Show equation row with uploaded and base image
             equationRow.style.display = 'flex';
             plusSign.style.display = 'inline-block';
@@ -45,12 +46,17 @@ faceInput.addEventListener('change', function() {
         retryBtn.style.display = 'none';
         downloadBtn.style.display = 'none';
     } else {
+        facePreview.src = '';
         facePreview.style.display = 'none';
         swapBtn.disabled = true;
         swapBtn.style.display = 'none';
         retryBtn.style.display = 'none';
         downloadBtn.style.display = 'none';
         equationRow.style.display = 'none';
+        plusSign.style.display = 'none';
+        baseImgEq.style.display = 'none';
+        equalsSign.style.display = 'none';
+        swappedImgEq.style.display = 'none';
         if (genBtnHolder) genBtnHolder.style.display = 'none';
         if (loadingHolder) loadingHolder.style.display = 'none';
     }
@@ -115,8 +121,10 @@ swapForm.addEventListener('submit', async function(e) {
     }
 });
 
+
 retryBtn.addEventListener('click', function() {
     faceInput.value = '';
+    facePreview.src = '';
     facePreview.style.display = 'none';
     resultDiv.innerHTML = '';
     retryBtn.style.display = 'none';
@@ -126,5 +134,9 @@ retryBtn.addEventListener('click', function() {
     if (equationRow) equationRow.style.display = 'none';
     if (genBtnHolder) genBtnHolder.style.display = 'none';
     if (loadingHolder) loadingHolder.style.display = 'none';
+    plusSign.style.display = 'none';
+    baseImgEq.style.display = 'none';
+    equalsSign.style.display = 'none';
+    swappedImgEq.style.display = 'none';
     faceInput.focus();
 });
