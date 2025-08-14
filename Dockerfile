@@ -20,7 +20,7 @@ RUN uv sync --frozen --no-dev
 COPY . .
 
 # Expose port (default FastAPI/uvicorn port)
-EXPOSE 8000
+EXPOSE 10000
 
 # Command to run the FastAPI app
-CMD ["/app/.venv/bin/fastapi", "run", "main.py", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/app/.venv/bin/fastapi", "run", "main.py", "--host", "0.0.0.0", "--port", "10000"]
