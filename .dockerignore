@@ -15,7 +15,6 @@ venv/
 .gitignore
 .DS_Store
 *.egg-info/
-static/mujib.jpg
 # Uncomment below if you want to exclude local data or test files
 # tests/
 # data/
