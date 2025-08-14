@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MujibSwap Face Swap | Swap your face with Mujib</title>
+    <meta name="description" content="Swap your face with Mujib using AI. Upload your photo and get a fun, instant face swap result!">
+    <meta name="keywords" content="face swap, Mujib, AI, photo, upload, fun, fastapi">
+    <meta property="og:title" content="MujibSwap Face Swap" />
+    <meta property="og:description" content="Swap your face with Mujib using AI. Upload your photo and get a fun, instant face swap result!" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={{ url_for('static', path='/mujib.jpg') }} />
+    <meta name="robots" content="index, follow">
+    <link rel="icon" href={{ url_for('static', path='/mujib.jpg') }}>
+    <link rel="stylesheet" href={{ url_for('static', path='/style.css') }}>
+</head>
+<body>
+    <div class="container">
+        <h1>MujibSwap</h1>
+        <form id="swapForm" autocomplete="off">
+            <div class="preview">
+                <label for="faceInput">Upload your face:</label>
+                <input type="file" id="faceInput" name="file" accept="image/*" required aria-label="Upload your face" />
+                <div id="equationRow" style="display:none; align-items:center; justify-content:center; gap:1.5em; margin-top:1.5em;">
+                    <img id="facePreview" style="display:none; width:160px; height:160px; object-fit:cover; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.10);" alt="Face preview" />
+                    <span id="plusSign" style="font-size:2.5em; display:none;">+</span>
+                    <img id="baseImgEq" src={{ url_for('static', path='/mujib.jpg') }} style="display:none; width:160px; height:160px; object-fit:cover; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.10);" alt="Base Image" />
+                    <span id="equalsSign" style="font-size:2.5em; display:none;">=</span>
+                    <span id="genBtnHolder" style="display:none; width:160px; height:160px; align-items:center; justify-content:center; position:relative;">
+                        <button id="genBtn" type="submit" style="width:100%;height:100%;font-size:1.2em;">Generate</button>
+                    </span>
+                    <span id="loadingHolder" style="display:none; width:160px; height:160px; align-items:center; justify-content:center; position:relative;">
+                        <span class="loader" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></span>
+                    </span>
+                    <img id="swappedImgEq" src="" style="display:none; width:160px; height:160px; object-fit:cover; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.10);" alt="Swapped Result" />
+                </div>
+            </div>
+            <button id="swapBtn" type="submit" style="display:none;">Swap Face</button>
+            <button id="retryBtn" type="button" style="display:none;margin-top:0.5em;">Try Another</button>
+            <a id="downloadBtn" href="#" download="swapped.jpeg" style="display:none;margin-top:0.5em;" class="download-btn">Download Result</a>
+            <div id="loader" aria-label="Loading"></div>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+    <script src={{ url_for('static', path='/app.js') }}></script>
+</body>
+</html>

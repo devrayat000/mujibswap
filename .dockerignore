@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.env
+.env.*
+.venv/
+venv/
+.idea/
+.vscode/
+.git/
+.gitignore
+.DS_Store
+*.egg-info/
+static/mujib.jpg
+# Uncomment below if you want to exclude local data or test files
+# tests/
+# data/
