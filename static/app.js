@@ -93,7 +93,21 @@ swapForm.addEventListener('submit', async function(e) {
             method: 'POST',
             body: formData
         });
-        if (!response.ok) throw new Error('Face swap failed');
+        
+        if (!response.ok) {
+            let errorMessage = 'Face swap failed';
+            try {
+                const errorData = await response.json();
+                if (errorData.detail) {
+                    errorMessage = errorData.detail;
+                }
+            } catch (parseError) {
+                // If JSON parsing fails, use default message
+                errorMessage = `Face swap failed (${response.status})`;
+            }
+            throw new Error(errorMessage);
+        }
+        
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
         resultDiv.innerHTML = `<h3>Swapped Result:</h3>`;
@@ -111,9 +125,11 @@ swapForm.addEventListener('submit', async function(e) {
         downloadBtn.style.display = 'inline-block';
         retryBtn.style.display = 'inline-block';
     } catch (err) {
-        resultDiv.innerHTML = `<span style="color:red;">${err.message}</span>`;
+        resultDiv.innerHTML = `<div style="color:red;padding:1em;background:#ffe6e6;border-radius:8px;margin-top:1em;">${err.message}</div>`;
         retryBtn.style.display = 'inline-block';
         if (loadingHolder) loadingHolder.style.display = 'none';
+        // Show generate button again for retry
+        if (genBtnHolder) genBtnHolder.style.display = 'flex';
     } finally {
         swapBtn.disabled = false;
         swapBtn.style.display = 'none';
